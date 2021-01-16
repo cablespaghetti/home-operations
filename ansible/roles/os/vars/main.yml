@@ -45,7 +45,6 @@ packages:
   - unzip
   - vim
   apt_remove:
-  - apparmor
   - apport
   - bcache-tools
   - btrfs-progs

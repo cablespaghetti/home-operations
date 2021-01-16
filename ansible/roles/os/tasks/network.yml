@@ -1,26 +1,5 @@
 ---
 
-# k3s still recommended use legacy iptables
-# https://rancher.com/docs/k3s/latest/en/known-issues/
-- name: network | configure nodes to use legacy iptables
-  become: true
-  community.general.alternatives:
-    name: "{{ item }}"
-    path: /usr/sbin/{{ item }}-legacy
-  loop:
-  - "iptables"
-  # - "ebtables"
-
-# k3s still recommended use legacy iptables
-# https://rancher.com/docs/k3s/latest/en/known-issues/
-- name: network | configure nodes to use legacy ip6tables
-  become: true
-  community.general.alternatives:
-    name: "{{ item }}"
-    path: /usr/sbin/{{ item }}-legacy
-  loop:
-  - "ip6tables"
-
 - name: network | sysctl
   become: true
   blockinfile:
