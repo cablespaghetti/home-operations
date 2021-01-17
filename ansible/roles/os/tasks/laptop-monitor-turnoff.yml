@@ -1,0 +1,41 @@
+---
+
+- name: laptop-monitor-turnoff | disable suspend on laptop close
+  lineinfile:
+    path: /etc/systemd/logind.conf
+    regexp: "{{ item.setting }}"
+    line: "{{ item.setting }}={{ item.value }}"
+  loop:
+    - { setting: HandleLidSwitch, value: ignore }
+    - { setting: HandleLidSwitchExternalPower, value: ignore }
+    - { setting: HandleLidSwitchDocked, value: ignore }
+    - { setting: LidSwitchIgnoreInhibited, value: no }
+  notify: restart logind
+
+- name: laptop-monitor-turnoff | install script
+  copy:
+    owner: root
+    mode: "0755"
+    content: |
+      #!/bin/bash
+      /bin/setterm -term linux -blank 10 -powerdown 5 </dev/tty1 >/dev/tty1
+    dest: "/usr/local/bin/screenblank.sh"
+
+- name: laptop-monitor-turnoff | install systemd unit
+  copy:
+    owner: root
+    mode: "0644"
+    content: |
+      [Unit]
+      After=network.service
+      
+      [Service]
+      ExecStart=/usr/local/bin/screenblank.sh
+      
+      [Install]
+      WantedBy=default.target
+    dest: "/etc/systemd/screenblank.service"
+
+- name: laptop-monitor-turnoff | enable and start systemd unit
+  systemd: state=started name=screenblank daemon_reload=yes enabled=yes
+
