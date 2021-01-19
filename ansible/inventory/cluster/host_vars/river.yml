@@ -1,7 +1,7 @@
 ---
 
 # IP address of node
-ansible_host: "192.168.1.137"
+ansible_host: "192.168.1.139"
 
 # Ansible user to ssh into servers with
 ansible_user: "sam"
@@ -12,7 +12,8 @@ ansible_user: "sam"
 # IP Address to advertise for this node.
 # for more k3s host variables, see
 # https://github.com/PyratLabs/ansible-role-k3s#host-variables
-k3s_node_ip_address: "{{ ansible_host }}"
+#k3s_agent:
+#  node-ip: "{{ ansible_host }}"
 
 # Set enabled to true to mark this host as running a distributed storage rook-ceph
 rook_ceph:

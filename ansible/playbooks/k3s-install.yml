@@ -17,5 +17,6 @@
       msg: "Abort."
     when: run_confirmation != "Y"
   roles:
+  - calico
   - xanmanning.k3s
   - k3s

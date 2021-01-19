@@ -17,6 +17,12 @@
     dest: "/usr/local/bin/calicoctl"
     mode: 0755
 
+- name: cluster | calico | create k3s manifests directory
+  file:
+    path: /var/lib/rancher/k3s/server/manifests
+    state: directory
+    mode: '0755'
+
 - name: cluster | calico | deploy tigera operator to k3s manifest directory
   become: true
   get_url:
@@ -39,7 +45,7 @@
         calicoNetwork:
           ipPools:
           - blockSize: 26
-            cidr: "{{ k3s_service_cidr }}"
+            cidr: "{{ k3s_server['service-cidr'] }}"
             encapsulation: IPIPCrossSubnet
             natOutgoing: Enabled
             nodeSelector: all()

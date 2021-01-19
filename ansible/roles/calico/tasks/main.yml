@@ -1,0 +1,10 @@
+---
+
+- include: cni-calico.yml
+  when:
+  - k3s_control_node is defined
+  - k3s_control_node
+  - calico.enabled is defined 
+  - calico.enabled
+  tags:
+  - cni-calico
