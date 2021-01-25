@@ -49,6 +49,7 @@
             encapsulation: IPIPCrossSubnet
             natOutgoing: Enabled
             nodeSelector: all()
+          containerIPForwarding: Enabled
 
 - name: cluster | calico | deploy BGP-peer to k3s manifest directory
   become: true
