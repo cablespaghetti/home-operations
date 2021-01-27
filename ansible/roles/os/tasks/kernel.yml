@@ -1,7 +1,13 @@
 ---
 
+- name: kernel | check if /etc/default/grub exists
+  stat:
+    path: /etc/default/grub
+  register: grub_default
+
 - name: kernel | increase loop device count
   become: true
+  when: grub_default.stat.exists == True
   replace:
     path: /etc/default/grub
     regexp: '^(GRUB_CMDLINE_LINUX_DEFAULT=(?:(?![" ]{{ option | regex_escape }}=).)*)(?:[" ]{{ option | regex_escape }}=\S+)?(.*")$'
@@ -9,6 +15,15 @@
   vars:
     option: max_loop
     value: 32
+
+- name: kernel | increase loop device count | Raspberry Pi
+  become: true
+  when: grub_default.stat.exists == False
+  lineinfile:
+    path: /boot/firmware/cmdline.txt
+    backrefs: yes
+    regexp: '^((?!.*\bmax_loop=32\b).*)$'
+    line: '\1 max_loop=32'
 
 - name: kernel | enable modules
   become: true
