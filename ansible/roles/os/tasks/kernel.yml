@@ -25,6 +25,14 @@
     regexp: '^((?!.*\bmax_loop=32\b).*)$'
     line: '\1 max_loop=32'
 
+- name: kernel | enable cgroups in cmdline.txt | Raspberry Pi
+  lineinfile:
+    path: /boot/firmware/cmdline.txt
+    backrefs: yes
+    regexp: '^((?!.*\bcgroup_enable=cpuset cgroup_memory=1 cgroup_enable=memory\b).*)$'
+    line: '\1 cgroup_enable=cpuset cgroup_memory=1 cgroup_enable=memory'
+  notify: reboot
+
 - name: kernel | enable modules
   become: true
   community.general.modprobe:
