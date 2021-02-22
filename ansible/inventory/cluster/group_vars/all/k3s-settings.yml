@@ -22,7 +22,6 @@ k3s_server:
     - traefik
   node-ip: "{{ ansible_host }}"
 
-k3s_etcd_datastore: true
 k3s_become_for_all: true
 
 # Enable debugging
